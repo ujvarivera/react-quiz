@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MakeQuiz from './components/MakeQuiz'
 
 function App() {
@@ -18,12 +19,11 @@ function App() {
   */
 
   return (
-    <div>
-      <h1 className='font-bold'>
-        Quiz App
-      </h1>
-      <MakeQuiz />
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<MakeQuiz />}/>
+    </Routes>
+    </BrowserRouter>
   )
 }
 
