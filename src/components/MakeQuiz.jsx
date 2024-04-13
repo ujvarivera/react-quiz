@@ -32,7 +32,7 @@ const MakeQuiz = () => {
             </NumberInput>
 
             <p>Choose a category:</p>
-            <Stack direction='row'>
+            <Stack direction='column'>
                 {
                     categories.map((category) => (
                         <Radio onChange={(e) => setSelectedCategory(e.target.value)} value={category.id} key={category.id} isChecked={selectedCategory == category.id}>{category.name}</Radio>
@@ -42,7 +42,7 @@ const MakeQuiz = () => {
 
             <p>Choose a difficulty:</p>
             <RadioGroup onChange={setSelectedDifficulty} value={selectedDifficulty}>
-                <Stack direction='row'>
+                <Stack direction='column'>
                     {
                         difficulties.map((difficulty) => (
                             <Radio value={difficulty} key={difficulty}>{difficulty}</Radio>

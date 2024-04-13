@@ -4,7 +4,7 @@ import { Button, Radio, RadioGroup, Stack } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 
 const Quiz = () => {
-    const { apiLink, questions, setQuestions, getQuestions } = useQuizContext()
+    const { apiLink, questions, setQuestions, getQuestions, points, setPoints } = useQuizContext()
     const [index, setIndex] = useState(0)
     const [options, setOptions] = useState([])
     const [selectedAnswer, setSelectedAnswer] = useState("")
@@ -16,6 +16,7 @@ const Quiz = () => {
     }
 
     useEffect(() => {
+        setPoints(0)
         setQuestions([])
         setOptions([])
         getQuestions(apiLink)
@@ -34,7 +35,15 @@ const Quiz = () => {
     }, [index, questions]);
 
     const nextQuestion = () => {
-        setIndex(index + 1)
+        if (selectedAnswer == questions[index].correct_answer) {
+            setPoints(points + 1)
+        }
+        console.log(selectedAnswer, questions[index].correct_answer);
+        if (index + 1 < questions.length) {
+            setIndex(index + 1)
+        } else {
+            navigate('/end')
+        }
     }
 
     return (
@@ -42,18 +51,19 @@ const Quiz = () => {
             <h2>
                 {questions[index] && questions[index].question}
             </h2>
+            <p>Your points: {points} of {questions.length}</p>
             <div>
-            {options.length > 0 ? (
-                <RadioGroup onChange={setSelectedAnswer} value={selectedAnswer}>
-                    <Stack direction='row'>
-                        {options.map((option, i) => (
-                            <Radio value={`option_${i}`} key={i}>{option}</Radio>
-                        ))}
-                    </Stack>
-                </RadioGroup>
-            ) : (
-                <p>Loading options...</p>
-            )}
+                {options.length > 0 ? (
+                    <RadioGroup onChange={setSelectedAnswer} value={selectedAnswer}>
+                        <Stack direction='column'>
+                            {options.map((option, i) => (
+                                <Radio value={option} key={i}>{option}</Radio>
+                            ))}
+                        </Stack>
+                    </RadioGroup>
+                ) : (
+                    <p>Loading options...</p>
+                )}
             </div>
 
             <Button onClick={() => navigate('/')} colorScheme='blue'>Exit</Button>

@@ -6,6 +6,7 @@ export const QuizContext = createContext();
 const QuizContextProvider = ({ children }) => {
     const [questions, setQuestions] = useState([])
     const [apiLink, setApiLink] = useState("")
+    const [points, setPoints] = useState(0)
 
     const getQuestions = async (URL) => {
         const { data } = await axios.get(URL);
@@ -18,7 +19,9 @@ const QuizContextProvider = ({ children }) => {
         setQuestions,
         getQuestions,
         apiLink,
-        setApiLink
+        setApiLink,
+        points,
+        setPoints,
     }}>{children}</QuizContext.Provider>;
 }
 
