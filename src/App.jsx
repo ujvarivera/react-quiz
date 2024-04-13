@@ -1,12 +1,12 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import MakeQuiz from './components/MakeQuiz'
 
 function App() {
   const [questions, setQuestions] = useState([])
   const URL = "https://opentdb.com/api.php?amount=10"
-  const categories = ["Any", "General Knowledge", "Entertainment: Books", "Entertainment: Film",
-    "Entertainment: Music", "Mythology", "Art", "Celebrities", "Animals"]
 
+  /*
   useEffect(() => {
     const getQuestions = async () => {
       const { data } = await axios.get(URL);
@@ -15,15 +15,14 @@ function App() {
     }
     getQuestions()
   }, [])
+  */
 
   return (
     <div>
-      Quiz App
-      <div>
-          {
-            questions && questions[0]?.question
-          }
-      </div>
+      <h1 className='font-bold'>
+        Quiz App
+      </h1>
+      <MakeQuiz />
     </div>
   )
 }
