@@ -4,23 +4,38 @@ import { Button, Radio, RadioGroup, Stack } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 
 const Quiz = () => {
-    const { apiLink, questions, getQuestions } = useQuizContext()
+    const { apiLink, questions, setQuestions, getQuestions } = useQuizContext()
     const [index, setIndex] = useState(0)
-    const [allAnswers, setAllAnswers] = useState([])
+    const [options, setOptions] = useState([])
     const [selectedAnswer, setSelectedAnswer] = useState("")
+
     const navigate = useNavigate()
 
+    const shuffle = (array) => {
+        return array.sort(() => Math.random() - 0.5)
+    }
+
     useEffect(() => {
+        setQuestions([])
+        setOptions([])
         getQuestions(apiLink)
-        // setAllAnswers([...questions[index]?.incorrect_answers])
-        // console.log(questions[index].incorrect_answers);
-        // console.log(questions[index].correct_answer);
     }, [apiLink])
-    /*
+
     useEffect(() => {
-        setAllAnswers([...questions[index]?.incorrect_answers])
-    }, [index])
-    */
+        setSelectedAnswer("")
+
+        if (questions[index]) {
+            let options = shuffle([
+                questions[index].correct_answer,
+                ...questions[index].incorrect_answers,
+            ]);
+            setOptions(options);
+        }
+    }, [index, questions]);
+
+    const nextQuestion = () => {
+        setIndex(index + 1)
+    }
 
     return (
         <div>
@@ -28,20 +43,21 @@ const Quiz = () => {
                 {questions[index] && questions[index].question}
             </h2>
             <div>
-                {
-                    questions[index] &&
-
-                    <div>
-                        <p>{questions[index].incorrect_answers[0]}</p>
-                        <p>{questions[index].incorrect_answers[1]}</p>
-                        <p>{questions[index].incorrect_answers[2]}</p>
-                        <p>{questions[index].correct_answer}</p>
-                    </div>
-                }
+            {options.length > 0 ? (
+                <RadioGroup onChange={setSelectedAnswer} value={selectedAnswer}>
+                    <Stack direction='row'>
+                        {options.map((option, i) => (
+                            <Radio value={`option_${i}`} key={i}>{option}</Radio>
+                        ))}
+                    </Stack>
+                </RadioGroup>
+            ) : (
+                <p>Loading options...</p>
+            )}
             </div>
 
             <Button onClick={() => navigate('/')} colorScheme='blue'>Exit</Button>
-            <Button onClick={() => setIndex(index + 1)} colorScheme='blue'>Next question</Button>
+            <Button onClick={nextQuestion} colorScheme='blue'>Next question</Button>
         </div>
     )
 }
