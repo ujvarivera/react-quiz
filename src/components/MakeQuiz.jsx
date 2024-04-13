@@ -1,21 +1,23 @@
 import React, { useState } from 'react'
+import { useNavigate } from "react-router-dom"
 import { Button, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Radio, RadioGroup, Stack } from '@chakra-ui/react'
 import { categories, difficulties } from "../constants/index"
+import useQuizContext from './../hooks/useQuizContext';
 
 const MakeQuiz = () => {
     const [questionNumber, setQuestionNumber] = useState(10)
     const [selectedCategory, setSelectedCategory] = useState("")
     const [selectedDifficulty, setSelectedDifficulty] = useState("easy")
-    const [link, setLink] = useState("")
+    const { setApiLink } = useQuizContext()
+    const navigate = useNavigate()
 
     const startQuiz = () => {
-        if (selectedCategory === "") {
-            const apiLink = `https://opentdb.com/api.php?amount=${questionNumber}&difficulty=${selectedDifficulty}&type=multiple`
-            setLink(apiLink)
-        } else {
-            const apiLink = `https://opentdb.com/api.php?amount=${questionNumber}&category=${selectedCategory}&difficulty=${selectedDifficulty}&type=multiple`
-            setLink(apiLink)
+        let apiLink = `https://opentdb.com/api.php?amount=${questionNumber}&difficulty=${selectedDifficulty}&type=multiple`
+        if (selectedCategory !== "") {
+            apiLink += `&category=${selectedCategory}`
         }
+        setApiLink(apiLink)
+        navigate('/quiz')
     }
 
     return (
@@ -58,7 +60,6 @@ const MakeQuiz = () => {
 
             <Button onClick={startQuiz} colorScheme='blue'>Start the game</Button>
 
-            <div>{link}</div>
         </div>
     )
 }
