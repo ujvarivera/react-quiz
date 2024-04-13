@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useQuizContext from '../hooks/useQuizContext'
-import { Button, Radio, RadioGroup, Stack } from '@chakra-ui/react'
+import { Box, Button, Container, Progress, Radio, RadioGroup, Stack, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 
 const Quiz = () => {
@@ -17,6 +17,7 @@ const Quiz = () => {
 
     useEffect(() => {
         setPoints(0)
+        setIndex(0)
         setQuestions([])
         setOptions([])
         getQuestions(apiLink)
@@ -47,12 +48,13 @@ const Quiz = () => {
     }
 
     return (
-        <div>
-            <h2>
+        <Container>
+            <Text fontSize="2xl">
                 {questions[index] && questions[index].question}
-            </h2>
-            <p>Your points: {points} of {questions.length}</p>
-            <div>
+            </Text>
+            <Text fontSize="md" m={2}>Your points: {points} of {questions.length}</Text>
+            <Progress max={questions.length} value={index + 1} maxW={600} />
+            <Box m={8}>
                 {options.length > 0 ? (
                     <RadioGroup onChange={setSelectedAnswer} value={selectedAnswer}>
                         <Stack direction='column'>
@@ -62,13 +64,17 @@ const Quiz = () => {
                         </Stack>
                     </RadioGroup>
                 ) : (
-                    <p>Loading options...</p>
+                    <Text>Loading options...</Text>
                 )}
-            </div>
+            </Box>
 
-            <Button onClick={() => navigate('/')} colorScheme='blue'>Exit</Button>
-            <Button onClick={nextQuestion} colorScheme='blue'>Next question</Button>
-        </div>
+            <Stack spacing={4} direction='row' align='center' justify='center'>
+                <Button onClick={() => navigate('/')} colorScheme='blue'>Exit</Button>
+                <Button onClick={nextQuestion} colorScheme='blue'>
+                    Next question
+                </Button>
+            </Stack>
+        </Container>
     )
 }
 
