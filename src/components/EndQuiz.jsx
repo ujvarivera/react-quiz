@@ -9,8 +9,8 @@ const EndQuiz = () => {
 
     return (
         <Container>
-            <Text>Quiz ended!</Text>
-            <Text>Your points: {points} of {questions.length}</Text>
+            <Text fontSize={"xl"}>Quiz ended!</Text>
+            <Text fontSize={"xl"}>Your points: {points} of {questions.length}</Text>
             <Center>
                 <Button onClick={() => navigate('/')} colorScheme='blue'>New Game</Button>
             </Center> 

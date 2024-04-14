@@ -8,6 +8,7 @@ const Quiz = () => {
     const [index, setIndex] = useState(0)
     const [options, setOptions] = useState([])
     const [selectedAnswer, setSelectedAnswer] = useState("")
+    const [answered, setAnswered] = useState(false)
 
     const navigate = useNavigate()
 
@@ -18,13 +19,15 @@ const Quiz = () => {
     useEffect(() => {
         setPoints(0)
         setIndex(0)
+        setAnswered(false)
         setQuestions([])
         setOptions([])
         getQuestions(apiLink)
     }, [apiLink])
 
     useEffect(() => {
-        setSelectedAnswer("")
+        //setSelectedAnswer("")
+        setAnswered(false)
 
         if (questions[index]) {
             let options = shuffle([
@@ -35,11 +38,18 @@ const Quiz = () => {
         }
     }, [index, questions]);
 
-    const nextQuestion = () => {
-        if (selectedAnswer == questions[index].correct_answer) {
+    useEffect(() => {
+        setAnswered(true)
+
+        if (selectedAnswer == questions[index]?.correct_answer) {
             setPoints(points + 1)
         }
-        console.log(selectedAnswer, questions[index].correct_answer);
+
+    }, [selectedAnswer])
+
+    const nextQuestion = () => {
+        setAnswered(false)
+
         if (index + 1 < questions.length) {
             setIndex(index + 1)
         } else {
@@ -49,17 +59,21 @@ const Quiz = () => {
 
     return (
         <Container>
-            <Text fontSize="2xl">
+            <Text fontSize="3xl">
                 {questions[index] && questions[index].question}
             </Text>
-            <Text fontSize="md" m={2}>Your points: {points} of {questions.length}</Text>
+            <Text fontSize="xl" m={2}>Your points: {points} of {questions.length}</Text>
             <Progress max={questions.length} value={index + 1} maxW={600} />
             <Box m={8}>
                 {options.length > 0 ? (
                     <RadioGroup onChange={setSelectedAnswer} value={selectedAnswer}>
                         <Stack direction='column'>
                             {options.map((option, i) => (
-                                <Radio value={option} key={i}>{option}</Radio>
+                                <Radio value={option} key={i} isDisabled={answered}>
+                                    <Text color={answered && option === selectedAnswer ? (option === questions[index]?.correct_answer ? "green" : "red") : ""} fontSize='2xl'>
+                                        {option}
+                                    </Text>
+                                </Radio>
                             ))}
                         </Stack>
                     </RadioGroup>
