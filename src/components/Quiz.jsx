@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import useQuizContext from '../hooks/useQuizContext'
 import { Box, Button, Container, Progress, Radio, RadioGroup, Stack, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
+import he from "he"
 
 const Quiz = () => {
     const { apiLink, questions, setQuestions, getQuestions, points, setPoints } = useQuizContext()
@@ -14,6 +15,10 @@ const Quiz = () => {
 
     const shuffle = (array) => {
         return array.sort(() => Math.random() - 0.5)
+    }
+
+    const replaceText = (text) => {
+        return he.decode(text)
     }
 
     useEffect(() => {
@@ -60,7 +65,7 @@ const Quiz = () => {
     return (
         <Container>
             <Text fontSize="3xl">
-                {questions[index] && questions[index].question}
+                {questions[index] && replaceText(questions[index].question)}
             </Text>
             <Text fontSize="xl" m={2}>Your points: {points} of {questions.length}</Text>
             <Progress max={questions.length} value={index + 1} maxW={600} />
@@ -71,7 +76,7 @@ const Quiz = () => {
                             {options.map((option, i) => (
                                 <Radio value={option} key={i} isDisabled={answered}>
                                     <Text color={answered && option === selectedAnswer ? (option === questions[index]?.correct_answer ? "green" : "red") : ""} fontSize='2xl'>
-                                        {option}
+                                        {replaceText(option)}
                                     </Text>
                                 </Radio>
                             ))}
