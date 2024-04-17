@@ -13,14 +13,6 @@ const Quiz = () => {
 
     const navigate = useNavigate()
 
-    const shuffle = (array) => {
-        return array.sort(() => Math.random() - 0.5)
-    }
-
-    const replaceText = (text) => {
-        return he.decode(text)
-    }
-
     useEffect(() => {
         setPoints(0)
         setIndex(0)
@@ -52,6 +44,15 @@ const Quiz = () => {
 
     }, [selectedAnswer])
 
+
+    const shuffle = (array) => {
+        return array.sort(() => Math.random() - 0.5)
+    }
+
+    const replaceText = (text) => {
+        return he.decode(text)
+    }
+
     const nextQuestion = () => {
         setAnswered(false)
 
@@ -62,20 +63,30 @@ const Quiz = () => {
         }
     }
 
+    const exitQuiz = () => {
+        setPoints(0)
+        setIndex(0)
+        setAnswered(false)
+        setQuestions([])
+        setOptions([])
+
+        navigate('/')
+    }
+
     return (
-        <Container>
-            <Text fontSize="3xl">
+        <Container minHeight={"100vh"} bgColor={"white"} opacity={0.9}>
+            <Text fontSize="3xl" p={2}>
                 {questions[index] && replaceText(questions[index].question)}
             </Text>
-            <Text fontSize="xl" m={2}>Your points: {points} of {questions.length}</Text>
-            <Progress max={questions.length} value={index + 1} maxW={600} />
+            <Text fontSize="xl" py={4}>Your points: {points} of {questions.length}</Text>
+            <Progress max={questions.length} value={index + 1} maxW={600} colorScheme='orange'/>
             <Box m={8}>
                 {options.length > 0 ? (
                     <RadioGroup onChange={setSelectedAnswer} value={selectedAnswer}>
                         <Stack direction='column'>
                             {options.map((option, i) => (
-                                <Radio value={option} key={i} isDisabled={answered}>
-                                    <Text color={answered && option === selectedAnswer ? (option === questions[index]?.correct_answer ? "green" : "red") : ""} fontSize='2xl'>
+                                <Radio value={option} key={i} isDisabled={answered} colorScheme='orange'>
+                                    <Text color={answered && option === selectedAnswer ? (option === questions[index]?.correct_answer ? "green" : "red") : ""} fontSize={"xl"}>
                                         {replaceText(option)}
                                     </Text>
                                 </Radio>
@@ -88,8 +99,8 @@ const Quiz = () => {
             </Box>
 
             <Stack spacing={4} direction='row' align='center' justify='center'>
-                <Button onClick={() => navigate('/')} colorScheme='blue'>Exit</Button>
-                <Button onClick={nextQuestion} colorScheme='blue'>
+                <Button onClick={exitQuiz} colorScheme='orange'>Exit</Button>
+                <Button onClick={nextQuestion} colorScheme='orange'>
                     Next question
                 </Button>
             </Stack>

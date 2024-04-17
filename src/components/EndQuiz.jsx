@@ -8,12 +8,22 @@ const EndQuiz = () => {
     const navigate = useNavigate()
 
     return (
-        <Container>
-            <Text fontSize={"xl"}>Quiz ended!</Text>
-            <Text fontSize={"xl"}>Your points: {points} of {questions.length}</Text>
+        <Container minHeight={"100vh"} bgColor={"white"} opacity={0.9}>
+            <Text py={4} fontSize={"xl"}>Quiz ended!</Text>
+            <Text py={4} fontSize={"xl"} color={"orange.500"}>
+                {
+                    points >= (0.70 * questions.length) ?
+                    "You did well, congratulations! :)" :
+                    "Practise more to achive more points!" 
+                }
+            </Text>
+            <Text py={4} fontSize={"xl"}>Your points: {points} of {questions.length}</Text>
+            
+
             <Center>
-                <Button onClick={() => navigate('/')} colorScheme='blue'>New Game</Button>
-            </Center> 
+                <Button onClick={() => navigate('/')} colorScheme='orange'>New Game</Button>
+            </Center>
+
         </Container>
     )
 }
