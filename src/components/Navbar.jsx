@@ -17,11 +17,10 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 
-
-const Links = ['Quiz', 'Sign In', 'Register']
+const Links = [{ name: 'Sign In', href: '/login' }, { name: 'Register', href: '/register' }]
 
 const NavLink = (props) => {
-    const { children } = props
+    const { children, href } = props
 
     return (
         <Box
@@ -33,7 +32,7 @@ const NavLink = (props) => {
                 textDecoration: 'none',
                 bg: useColorModeValue('gray.200', 'gray.700'),
             }}
-            href={'#'}>
+            href={href}>
             {children}
         </Box>
     )
@@ -54,10 +53,12 @@ export default function Navbar() {
                         onClick={isOpen ? onClose : onOpen}
                     />
                     <HStack spacing={8} alignItems={'center'}>
-                        {/*<Box>Logo</Box>*/}
+                        <Box color={"orange.500"} fontSize={"24px"}>
+                            QuizGamer
+                        </Box>
                         <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
                             {Links.map((link) => (
-                                <NavLink key={link}>{link}</NavLink>
+                                <NavLink key={link.name} href={link.href}>{link.name}</NavLink>
                             ))}
                         </HStack>
                     </HStack>
@@ -92,14 +93,14 @@ export default function Navbar() {
                     <Box pb={4} display={{ md: 'none' }}>
                         <Stack as={'nav'} spacing={4}>
                             {Links.map((link) => (
-                                <NavLink key={link}>{link}</NavLink>
+                                <NavLink key={link.name} href={link.href}>{link.name}</NavLink>
                             ))}
                         </Stack>
                     </Box>
                 ) : null}
             </Box>
 
-            {/* <Box p={4}>Main Content Here</Box>*/ }
+            {/* <Box p={4}>Main Content Here</Box>*/}
         </>
     )
 }
