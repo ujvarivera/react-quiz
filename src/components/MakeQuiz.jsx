@@ -21,7 +21,7 @@ const MakeQuiz = () => {
     }
 
     return (
-        <Container minHeight={"100vh"} bgColor={"white"} opacity={0.9}>
+        <Container minHeight={"100vh"} bgColor={"white"} opacity={0.9} marginY={"20px"}>
             <Box p={2}>
                 <Text fontSize="xl">Choose the number or questions: </Text>
                 <NumberInput value={questionNumber} onChange={setQuestionNumber} min="5" max="50" maxW={20}>
