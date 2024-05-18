@@ -4,12 +4,14 @@ import Quiz from './components/Quiz';
 import EndQuiz from "./components/EndQuiz";
 import Login from "./components/Login";
 import Register from './components/Register';
+import useAuthContext from "./hooks/useAuthContext";
 
 function App() {
+  const {user} = useAuthContext()
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MakeQuiz />} />
+        <Route path="/" element={user?.user?.name && <MakeQuiz />} />
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/end" element={<EndQuiz />} />
         <Route path="/login" element={<Login />} />

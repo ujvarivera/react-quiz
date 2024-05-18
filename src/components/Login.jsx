@@ -12,14 +12,34 @@ import {
   FormControl,
   InputRightElement
 } from "@chakra-ui/react";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import useAuthContext from './../hooks/useAuthContext';
+import FlashMessage from './FlashMessage';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [emailInput, setEmailInput] = useState("")
+  const [passwordInput, setPasswordInput] = useState("")
+  const { user, setUser, handleLogin, authError } = useAuthContext()
+  const navigate = useNavigate()
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
+  const clickLoginButton = async (event) => {
+    event.preventDefault()
+    await handleLogin(emailInput, passwordInput)
+
+    if (user?.user?.name) {
+      navigate('/')
+    }
+  }
+
   return (
+    <>
+      {
+        authError &&
+        <FlashMessage message={authError?.message}/>
+      }
     <Flex
       flexDirection="column"
       width="100wh"
@@ -46,12 +66,19 @@ const Login = () => {
             >
               <FormControl>
                 <InputGroup>
-                  <Input type="email" placeholder="Email address" />
+                  <Input
+                    value={emailInput}
+                    onChange={(e) => setEmailInput(e.target.value)}
+                    type="email"
+                    placeholder="Email address"
+                  />
                 </InputGroup>
               </FormControl>
               <FormControl>
                 <InputGroup>
                   <Input
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                   />
@@ -63,6 +90,7 @@ const Login = () => {
                 </InputGroup>
               </FormControl>
               <Button
+                onClick={clickLoginButton}
                 borderRadius={0}
                 type="submit"
                 variant="solid"
@@ -82,6 +110,7 @@ const Login = () => {
         </NavLink>
       </Box>
     </Flex>
+    </>
   )
 }
 

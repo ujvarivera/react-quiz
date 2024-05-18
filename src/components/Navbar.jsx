@@ -16,8 +16,7 @@ import {
     Stack,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
-
-const Links = [{ name: 'Sign In', href: '/login' }, { name: 'Register', href: '/register' }]
+import useAuthContext from './../hooks/useAuthContext';
 
 const NavLink = (props) => {
     const { children, href } = props
@@ -40,6 +39,8 @@ const NavLink = (props) => {
 
 export default function Navbar() {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { user, handleLogout } = useAuthContext()
+    const Links = [{ name: 'Sign In', href: '/login', show: !user?.user?.name }, { name: 'Register', href: '/register', show: !user?.user?.name }]
 
     return (
         <>
@@ -57,35 +58,36 @@ export default function Navbar() {
                             QuizGamer
                         </Box>
                         <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
-                            {Links.map((link) => (
-                                <NavLink key={link.name} href={link.href}>{link.name}</NavLink>
-                            ))}
+                            {
+                                !user?.user?.name &&
+                                <>
+                                    <NavLink key={Links[0].name} href={Links[0].href}>{Links[0].name}</NavLink>
+                                    <NavLink key={Links[1].name} href={Links[1].href}>{Links[1].name}</NavLink>
+                                </>
+                            }
                         </HStack>
                     </HStack>
                     <Flex alignItems={'center'}>
-                        <Menu>
-                            <MenuButton
-                                as={Button}
-                                rounded={'full'}
-                                variant={'link'}
-                                cursor={'pointer'}
-                                minW={0}>
-                                <Avatar
-                                    size={'sm'}
-                                    src={
-                                        'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                                    }
-                                />
-                            </MenuButton>
-                            <MenuList>
-                                <MenuItem>Logout</MenuItem>
-                                {/*
-                <MenuItem>Profile</MenuItem>
-                <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
-                */ }
-                            </MenuList>
-                        </Menu>
+                        {
+                            user?.user?.name &&
+                            <>
+                                <Box marginRight={"10px"}>Helló {user?.user?.name}!</Box>
+                                
+                                <Menu>
+                                    <MenuButton
+                                        as={Button}
+                                        rounded={'full'}
+                                        variant={'link'}
+                                        cursor={'pointer'}
+                                        minW={0}>
+                                        <Avatar bg="orange.500" size={'sm'}/>
+                                    </MenuButton>
+                                    <MenuList>
+                                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                                    </MenuList>
+                                </Menu>
+                            </>
+                        }
                     </Flex>
                 </Flex>
 
