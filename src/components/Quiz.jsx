@@ -94,7 +94,15 @@ const Quiz = () => {
                         <Stack direction='column'>
                             {options.map((option, i) => (
                                 <Radio value={option} key={i} isDisabled={answered} colorScheme='orange'>
-                                    <Text color={answered && option === selectedAnswer ? (option === questions[index]?.correct_answer ? "green" : "red") : ""} fontSize={"xl"}>
+                                    <Text color={
+                                          answered 
+                                          ? option === questions[index]?.correct_answer 
+                                            ? "green" 
+                                            : option === selectedAnswer 
+                                              ? "red" 
+                                              : ""
+                                          : ""
+                                    } fontSize={"xl"}>
                                         {replaceText(option)}
                                     </Text>
                                 </Radio>
