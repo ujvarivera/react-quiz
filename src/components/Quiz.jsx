@@ -3,10 +3,22 @@ import useQuizContext from '../hooks/useQuizContext'
 import { Box, Button, Container, Progress, Radio, RadioGroup, Stack, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import he from "he"
-import axios from 'axios'
+import useAuthContext from '../hooks/useAuthContext'
 
 const Quiz = () => {
-    const { apiLink, questions, setQuestions, getQuestions, points, setPoints } = useQuizContext()
+    const { 
+        apiLink, 
+        questions, 
+        setQuestions, 
+        getQuestions, 
+        points, 
+        setPoints, 
+        questionNumber,
+        selectedCategory,
+        selectedDifficulty,
+        handleScorePost,
+    } = useQuizContext()
+    const { user } = useAuthContext()
     const [index, setIndex] = useState(0)
     const [options, setOptions] = useState([])
     const [selectedAnswer, setSelectedAnswer] = useState("")
@@ -14,10 +26,13 @@ const Quiz = () => {
     const navigate = useNavigate()
 
     const postMyPoint = async () => {
-        axios.post(import.meta.env.VITE_API_QUIZ, {
-            user_id: 1,
-            score: points
-        })
+        await handleScorePost(
+            user?.user?.id,
+            points,
+            questionNumber,
+            selectedCategory,
+            selectedDifficulty
+        )
     }
 
     useEffect(() => {

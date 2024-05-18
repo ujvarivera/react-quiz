@@ -5,10 +5,15 @@ import { categories, difficulties } from "../constants/index"
 import useQuizContext from './../hooks/useQuizContext';
 
 const MakeQuiz = () => {
-    const [questionNumber, setQuestionNumber] = useState(10)
-    const [selectedCategory, setSelectedCategory] = useState("")
-    const [selectedDifficulty, setSelectedDifficulty] = useState("easy")
-    const { setApiLink } = useQuizContext()
+    const { 
+        setApiLink, 
+        questionNumber, 
+        setQuestionNumber, 
+        selectedCategory, 
+        setSelectedCategory, 
+        selectedDifficulty, 
+        setSelectedDifficulty 
+    } = useQuizContext()
     const navigate = useNavigate()
 
     const startQuiz = () => {
@@ -25,10 +30,10 @@ const MakeQuiz = () => {
             <Box p={2}>
                 <Text fontSize="xl">Choose the number or questions: </Text>
                 <NumberInput value={questionNumber} onChange={setQuestionNumber} min="5" max="50" maxW={20}>
-                    <NumberInputField borderColor='orange.200' focusBorderColor={"orange.200"} _focusVisible={{outline: "orange.400"}}/>
+                    <NumberInputField borderColor='orange.200' focusBorderColor={"orange.200"} _focusVisible={{ outline: "orange.400" }} />
                     <NumberInputStepper>
-                        <NumberIncrementStepper bg='orange.200'/>
-                        <NumberDecrementStepper bg='orange.200'/>
+                        <NumberIncrementStepper bg='orange.200' />
+                        <NumberDecrementStepper bg='orange.200' />
                     </NumberInputStepper>
                 </NumberInput>
             </Box>
