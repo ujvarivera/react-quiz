@@ -12,7 +12,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ChakraProvider>
       <AuthContextProvider>
         <QuizContextProvider>
-          <Navbar />
           <App />
         </QuizContextProvider>
       </AuthContextProvider>

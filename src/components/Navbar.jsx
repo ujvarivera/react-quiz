@@ -17,25 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import useAuthContext from './../hooks/useAuthContext';
-
-const NavLink = (props) => {
-    const { children, href } = props
-
-    return (
-        <Box
-            as="a"
-            px={2}
-            py={1}
-            rounded={'md'}
-            _hover={{
-                textDecoration: 'none',
-                bg: useColorModeValue('gray.200', 'gray.700'),
-            }}
-            href={href}>
-            {children}
-        </Box>
-    )
-}
+import { NavLink } from 'react-router-dom';
 
 export default function Navbar() {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -54,15 +36,15 @@ export default function Navbar() {
                         onClick={isOpen ? onClose : onOpen}
                     />
                     <HStack spacing={8} alignItems={'center'}>
-                        <Box color={"orange.500"} fontSize={"24px"}>
+                        <Box as={NavLink} to={"/"} color={"orange.500"} fontSize={"24px"}>
                             QuizGamer
                         </Box>
                         <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
                             {
                                 !user?.user?.name &&
                                 <>
-                                    <NavLink key={Links[0].name} href={Links[0].href}>{Links[0].name}</NavLink>
-                                    <NavLink key={Links[1].name} href={Links[1].href}>{Links[1].name}</NavLink>
+                                    <NavLink to={Links[0].href}>{Links[0].name}</NavLink>
+                                    <NavLink to={Links[1].href}>{Links[1].name}</NavLink>
                                 </>
                             }
                         </HStack>
@@ -95,7 +77,7 @@ export default function Navbar() {
                     <Box pb={4} display={{ md: 'none' }}>
                         <Stack as={'nav'} spacing={4}>
                             {Links.map((link) => (
-                                <NavLink key={link.name} href={link.href}>{link.name}</NavLink>
+                                <NavLink to={link.href}>{link.name}</NavLink>
                             ))}
                         </Stack>
                     </Box>

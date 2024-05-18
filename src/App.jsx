@@ -5,15 +5,17 @@ import EndQuiz from "./components/EndQuiz";
 import Login from "./components/Login";
 import Register from './components/Register';
 import useAuthContext from "./hooks/useAuthContext";
+import Navbar from './components/Navbar';
 
 function App() {
   const {user} = useAuthContext()
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={user?.user?.name && <MakeQuiz />} />
-        <Route path="/quiz" element={<Quiz />} />
-        <Route path="/end" element={<EndQuiz />} />
+        <Route path="/quiz" element={user?.user?.name && <Quiz />} />
+        <Route path="/end" element={user?.user?.name && <EndQuiz />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
