@@ -45,8 +45,9 @@ const Login = () => {
       width="100wh"
       height="100vh"
       backgroundColor="gray.200"
-      justifyContent="center"
+      //justifyContent="center"
       alignItems="center"
+      paddingTop={"40px"}
     >
       <Stack
         flexDir="column"

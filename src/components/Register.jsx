@@ -12,21 +12,43 @@ import {
   FormControl,
   InputRightElement
 } from "@chakra-ui/react";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import FlashMessage from './FlashMessage';
+import useAuthContext from '../hooks/useAuthContext';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [emailInput, setEmailInput] = useState("")
+  const [passwordInput, setPasswordInput] = useState("")
+  const [nameInput, setNameInput] = useState("")
+  const { user, setUser, handleRegister, authError } = useAuthContext()
+  const navigate = useNavigate()
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
+  const clickRegisterButton = async (event) => {
+    event.preventDefault()
+    await handleRegister(nameInput, emailInput, passwordInput)
+
+    if (user?.user?.name) {
+      navigate('/')
+    }
+  }
+
   return (
+    <>
+      {
+        authError &&
+        <FlashMessage message={authError?.message}/>
+      }
     <Flex
       flexDirection="column"
       width="100wh"
       height="100vh"
       backgroundColor="gray.200"
-      justifyContent="center"
+      //justifyContent="center"
       alignItems="center"
+      paddingTop={"40px"}
     >
       <Stack
         flexDir="column"
@@ -46,17 +68,29 @@ const Register = () => {
             >
               <FormControl>
                 <InputGroup>
-                  <Input type="text" placeholder="Name" />
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <InputGroup>
-                  <Input type="email" placeholder="Email address" />
+                  <Input 
+                    value={nameInput}
+                    onChange={(e) => setNameInput(e.target.value)}
+                    type="text" 
+                    placeholder="Name" 
+                  />
                 </InputGroup>
               </FormControl>
               <FormControl>
                 <InputGroup>
                   <Input
+                    value={emailInput}
+                    onChange={(e) => setEmailInput(e.target.value)}
+                    type="email" 
+                    placeholder="Email address" 
+                  />
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <InputGroup>
+                  <Input
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                   />
@@ -68,6 +102,7 @@ const Register = () => {
                 </InputGroup>
               </FormControl>
               <Button
+                onClick={clickRegisterButton}
                 borderRadius={0}
                 type="submit"
                 variant="solid"
@@ -87,6 +122,7 @@ const Register = () => {
         </NavLink>
       </Box>
     </Flex>
+    </>
   )
 }
 

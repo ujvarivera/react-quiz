@@ -19,12 +19,17 @@ const AuthContextProvider = ({ children }) => {
         });
     }
 
-    const handleRegister = async (userName, email, password) => {
-        axios.post(import.meta.env.VITE_API_LOGIN, {
-            name: userName,
+    const handleRegister = async (fullName, email, password) => {
+        await axios.post(import.meta.env.VITE_API_REGISTER, {
+            name: fullName,
             email: email,
             password: password
-        })
+        }).then(function (response) {
+            setUser(response.data);
+            setAuthError(null)
+        }).catch(function (error) {
+            setAuthError(error.response.data);
+        });
     }
 
     const handleLogout = async() => {
