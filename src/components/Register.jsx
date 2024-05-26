@@ -20,19 +20,17 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [emailInput, setEmailInput] = useState("")
   const [passwordInput, setPasswordInput] = useState("")
+  const [passwordConfInput, setPasswordConfInput] = useState("")
   const [nameInput, setNameInput] = useState("")
   const { user, setUser, handleRegister, authError } = useAuthContext()
   const navigate = useNavigate()
 
   const handleShowClick = () => setShowPassword(!showPassword);
+  const goToHome = () => navigate('/');
 
   const clickRegisterButton = async (event) => {
     event.preventDefault()
-    await handleRegister(nameInput, emailInput, passwordInput)
-
-    if (user?.user?.name) {
-      navigate('/')
-    }
+    await handleRegister(nameInput, emailInput, passwordInput, passwordConfInput, goToHome)
   }
 
   return (
@@ -91,6 +89,21 @@ const Register = () => {
                   <Input
                     value={passwordInput}
                     onChange={(e) => setPasswordInput(e.target.value)}
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={handleShowClick}>
+                      {showPassword ? "Hide" : "Show"}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <InputGroup>
+                  <Input
+                    value={passwordConfInput}
+                    onChange={(e) => setPasswordConfInput(e.target.value)}
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                   />

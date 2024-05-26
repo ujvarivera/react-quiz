@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import useQuizContext from '../hooks/useQuizContext'
 import { Button, Center, Container, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { formatDate } from '../constants'
+import axiosInstance from '../constants/axios'
 
 const EndQuiz = () => {
     const { points, questions } = useQuizContext()
@@ -12,7 +12,7 @@ const EndQuiz = () => {
 
     useEffect(() => {
         const getMyPoints = async () => {
-            const { data } = await axios.get(import.meta.env.VITE_API_QUIZ);
+            const { data } = await axiosInstance.get("api/v1/quiz-scores");
             setMyScores(data)
         }
 

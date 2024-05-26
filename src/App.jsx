@@ -13,9 +13,9 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path="/" element={user?.user?.name && <MakeQuiz />} />
-        <Route path="/quiz" element={user?.user?.name && <Quiz />} />
-        <Route path="/end" element={user?.user?.name && <EndQuiz />} />
+        <Route path="/" element={user?.name && <MakeQuiz />} />
+        <Route path="/quiz" element={user?.name && <Quiz />} />
+        <Route path="/end" element={user?.name && <EndQuiz />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

@@ -20,18 +20,15 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [emailInput, setEmailInput] = useState("")
   const [passwordInput, setPasswordInput] = useState("")
-  const { user, setUser, handleLogin, authError } = useAuthContext()
+  const { user, setUser, handleLogin, authError} = useAuthContext()
   const navigate = useNavigate()
 
   const handleShowClick = () => setShowPassword(!showPassword);
+  const goToHome = () => navigate('/');
 
   const clickLoginButton = async (event) => {
     event.preventDefault()
-    await handleLogin(emailInput, passwordInput)
-
-    if (user?.user?.name) {
-      navigate('/')
-    }
+    await handleLogin(emailInput, passwordInput, goToHome)
   }
 
   return (

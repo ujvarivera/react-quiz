@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useState } from "react";
+import axiosInstance from "../constants/axios";
 
 export const QuizContext = createContext();
 
@@ -18,12 +19,12 @@ const QuizContextProvider = ({ children }) => {
     }
 
     const handleScorePost = async(user_id, score, questions, category, difficulty) => {
-        axios.post(import.meta.env.VITE_API_QUIZ, {
-            user_id,
-            score,
-            questions,
-            category,
-            difficulty,
+        axiosInstance.post("api/v1/quiz-scores", {
+            user_id: user_id,
+            score: score,
+            questions: questions,
+            category: category,
+            difficulty: difficulty,
         }).then(function (response) {
             console.log('Saved');
         }).catch(function (error) {

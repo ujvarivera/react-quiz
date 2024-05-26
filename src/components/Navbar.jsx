@@ -22,7 +22,7 @@ import { NavLink } from 'react-router-dom';
 export default function Navbar() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { user, handleLogout } = useAuthContext()
-    const Links = [{ name: 'Sign In', href: '/login', show: !user?.user?.name }, { name: 'Register', href: '/register', show: !user?.user?.name }]
+    const Links = [{ name: 'Sign In', href: '/login', show: !user?.name }, { name: 'Register', href: '/register', show: !user?.name }]
 
     return (
         <>
@@ -41,19 +41,17 @@ export default function Navbar() {
                         </Box>
                         <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
                             {
-                                !user?.user?.name &&
-                                <>
-                                    <NavLink to={Links[0].href}>{Links[0].name}</NavLink>
-                                    <NavLink to={Links[1].href}>{Links[1].name}</NavLink>
-                                </>
+                                Links.map((link) => (
+                                    link.show && <NavLink to={link.href}>{link.name}</NavLink>
+                                ))
                             }
                         </HStack>
                     </HStack>
                     <Flex alignItems={'center'}>
                         {
-                            user?.user?.name &&
+                            user?.name &&
                             <>
-                                <Box marginRight={"10px"}>Helló {user?.user?.name}!</Box>
+                                <Box marginRight={"10px"}>Helló {user?.name}!</Box>
                                 
                                 <Menu>
                                     <MenuButton

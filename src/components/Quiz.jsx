@@ -27,7 +27,7 @@ const Quiz = () => {
 
     const postMyPoint = async () => {
         await handleScorePost(
-            user?.user?.id,
+            user?.id,
             points,
             questionNumber,
             selectedCategory,
